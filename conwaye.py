@@ -1,4 +1,6 @@
 ### Conway's Game of Life
+import time as t
+import random as r
 
 gridheight = 30
 gridwidth = 60
@@ -14,6 +16,7 @@ def printgrid(grid):
         outstring += "█"
         outstring += "\n"
     outstring += ("█"*(gridwidth + 2))
+    outstring += "\n"
     return outstring
     
 
@@ -29,12 +32,29 @@ print(printgrid(pixelgrid))
 
 input("Press enter...")
 
-for i in range(gridwidth):
-    pixelgrid[i][15] = "▓"
-    try:
-        pixelgrid[i-2][15] = " "
-    except:
-        pass
-    print(printgrid(pixelgrid) + "\n")
-    #input("Press enter...")
+while True:
+    for i in range(gridheight):
+        for j in range(gridwidth):
+            if r.randint(0,1) == 1: 
+                pixelgrid[j][i] = "▓"
+            else:
+                pixelgrid[j][i] = " "
+
+    
+    print(printgrid(pixelgrid))
+    t.sleep(0.01)
+
+##for j in range(gridheight):
+##    for i in range(gridwidth+2):
+##        try:
+##            pixelgrid[i][j] = "▓"
+##        except:
+##            pass
+##        try:
+##            pixelgrid[i-2][j] = " "
+##        except:
+##            pass
+##        print(printgrid(pixelgrid))
+##        t.sleep(0.01)
+##        #input("Press enter...")
 
