@@ -1,4 +1,6 @@
-### Conway's Game of Life
+###### Conway's Game of Life ######
+###### made by Samuel Lomas
+###### github: https://github.com/slomas04
 import time as t
 import random as r
 
@@ -40,40 +42,95 @@ def printgrid(grid): #Super Snazzy optimised print function I made, it compiles 
     outstring += ("█"*(gridwidth + 2))
     outstring += "\n"
     return outstring
+
+###### COUNT LIVING NEIGHBORS ######
+
+def numneighbors(grid, row, col): #long and probably innefficient function that returns the number of living neighbors a cell has
+    num = 0
+    try:
+        if grid[row + 1][col] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row - 1][col] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row][col + 1] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row][col - 1] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row + 1][col + 1] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row + 1][col - 1] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row - 1][col + 1] == "▓":
+            num += 1
+    except:
+        pass
+    try:
+        if grid[row - 1][col - 1] == "▓":
+            num += 1
+    except:
+        pass
+    
+    return num
+    
     
 ###### GENERATE PIXEL GRID ######
 
 pixelgrid = [[" " for y in range (gridheight)] for x in range(gridwidth)]
 
+for i in range(gridheight):
+    for j in range(gridwidth):
+        if r.randint(0,1) == 1: 
+            pixelgrid[j][i] = "▓"
+        else:
+            pixelgrid[j][i] = " "
+
 print(printgrid(pixelgrid))
+
+print(numneighbors(pixelgrid, 5, 5))
 
 input("Press enter...")
 
-####### RANDOM FILL ######
+###### MAINLOOP ######
 
 while True:
-    for i in range(gridheight):
-        for j in range(gridwidth):
-            if r.randint(0,1) == 1: 
-                pixelgrid[j][i] = "▓"
-            else:
-                pixelgrid[j][i] = " "
-
+    newiteration = [[" " for y in range (gridheight)] for x in range(gridwidth)] #create a new grid to iterate onto
+    for j in range(gridheight):
+        
+        for i in range(gridwidth):
+            
+            livingneighbors = numneighbors(pixelgrid, i, j)
+            
+            if pixelgrid[i][j] == " ":
+                if livingneighbors == 3:
+                    newiteration[i][j] = "▓" #If a dead cell has three living neighbors, it comes to life
+                    
+            elif pixelgrid[i][j] == "▓":
+                if (livingneighbors == 2) or (livingneighbors == 3):
+                    newiteration[i][j] = "▓" #If a living cell has two or three neighbors, it continues.
+                
+                elif (livingneighbors < 2) or (livingneighbors > 3):
+                    newiteration[i][j] = " " #If a living cell has one or less than two or more than three neighbors, it dies
     
-    print(printgrid(pixelgrid))
+    
+    pixelgrid = newiteration #save the new grid iteration
+    print(printgrid(pixelgrid)) #print
     t.sleep(0.01)
-
-##for j in range(gridheight):
-##    for i in range(gridwidth+2):
-##        try:
-##            pixelgrid[i][j] = "▓"
-##        except:
-##            pass
-##        try:
-##            pixelgrid[i-2][j] = " "
-##        except:
-##            pass
-##        print(printgrid(pixelgrid))
-##        t.sleep(0.01)
-##        #input("Press enter...")
 
