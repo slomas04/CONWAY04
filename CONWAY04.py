@@ -26,7 +26,7 @@ else:
     except:
         print("Not a Number! Defaulting to 75.")
         gridwidth = 75
-
+        
 ###### PRINT FUNCTION ######
 
 def printgrid(grid): #Super Snazzy optimised print function I made, it compiles the entire array and details down to one string, therefore speeding up the framerate
@@ -42,6 +42,34 @@ def printgrid(grid): #Super Snazzy optimised print function I made, it compiles 
     outstring += ("█"*(gridwidth + 2))
     outstring += "\n"
     return outstring
+
+###### GRID EDITOR ######
+
+def editgrid(grid):
+    while True:
+        print(printgrid(grid))
+        coords = input("Enter the coords you wish to place/flip\t\t'exit' to leave the editor\nSeparate coordinates with space\n\t>>> ")
+
+        if coords == "exit":
+            break
+        else:
+            try:
+                coords = coords.split(' ')
+                xcord = int(coords[0]) - 1
+                ycord = gridheight - int(coords[1])
+
+                if grid[xcord][ycord] == "▓":
+                    grid[xcord][ycord] = " "
+
+                elif grid[xcord][ycord] == " ":
+                    grid[xcord][ycord] = "▓"
+                        
+            except:
+                print("Coordinates not Valid!")
+                
+        
+
+    return grid
 
 ###### COUNT LIVING NEIGHBORS ######
 
@@ -104,9 +132,13 @@ for i in range(gridheight):
 
 print(printgrid(pixelgrid))
 
-print(numneighbors(pixelgrid, 5, 5))
-
-input("Press enter...")
+if input("This is a randomised grid. Type 1 and hit enter to wipe the grid and manually customise it.\nIf not, Hit enter to continue.\n\t>>> ") == "1": # Give user the choice to manually edit grid
+    pixelgrid = [[" " for y in range (gridheight)] for x in range(gridwidth)]
+    pixelgrid = editgrid(pixelgrid)
+    print(printgrid(pixelgrid))
+    input("Press Enter to Start... ")
+else:
+    pass
 
 ###### MAINLOOP ######
 
